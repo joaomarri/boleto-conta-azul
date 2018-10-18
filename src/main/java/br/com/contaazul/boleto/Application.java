@@ -3,42 +3,45 @@ package br.com.contaazul.boleto;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.boot.web.support.SpringBootServletInitializer;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @SpringBootApplication
-public class Application implements ApplicationRunner {
+public class Application extends SpringBootServletInitializer {
 
 	private static final Logger logger = LoggerFactory.getLogger(Application.class);
 	
 	
-	@Value("${accesslog}")
-	private String accesslog;
-	
-	@Value("${startDate}")
-	private String startDate;
-
-	@Value("${duration}")
-	private String duration;
-
-	@Value("${threshold}")
-	private Integer threshold;
-	
-	
-	public static void main(String[] args) {
-		
-		SpringApplication.run(Application.class, args);
-	}
-
-
 	@Override
-	public void run(ApplicationArguments args) throws Exception {
-		// TODO Auto-generated method stub
-		
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+		return builder.sources(Application.class);
 	}
+
+	private static SpringApplicationBuilder configureApplication(SpringApplicationBuilder builder) {
+		return builder.sources(Application.class);
+	}
+
+	public static void main(String[] args) {
+		configureApplication(new SpringApplicationBuilder()).run(args);
+	}
+
+	@Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurerAdapter() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/*")
+                	.allowedOrigins("http://localhost")
+                	.allowedOrigins("http://localhost:8080");
+            }
+        };
+    }
+	
 
 	
 }
