@@ -13,11 +13,11 @@ public class DataSourceConfig {
 
     @Bean(name="dataSource")
     public DataSource dataSource() {
-    		BasicDataSource dataSource = new BasicDataSource(); 
-        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUsername("user");
-        dataSource.setPassword("senha");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/boletodb?profileSQL=false");
+    	BasicDataSource dataSource = new BasicDataSource(); 
+        dataSource.setDriverClassName("org.h2.Driver");
+        dataSource.setUsername("sa");
+        dataSource.setPassword("");
+        dataSource.setUrl("jdbc:h2:mem:testdb");
         dataSource.setInitialSize(5);
         dataSource.setMaxActive(20);
         dataSource.setMaxIdle(10);
