@@ -1,4 +1,4 @@
-package br.com.contaazul.boleto;
+package br.com.contaazul.boleto.util;
 
 import java.text.ParseException;
 import java.util.Date;

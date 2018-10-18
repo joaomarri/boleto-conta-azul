@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/home")
 public class HomeController {
 	
-	@GetMapping(value = "/hello", produces = "application/json;charset=UTF-8")
-	public ResponseEntity<?> hello(){
+	@GetMapping(value = "/check", produces = "application/json;charset=UTF-8")
+	public ResponseEntity<?> checkApi(){
 		return new ResponseEntity<Object>("Ok", HttpStatus.OK);
 	}
 
