@@ -9,7 +9,7 @@ public class UUDIGenerator {
 
 	
 	public synchronized static String generateUniqueId() {
-		UUID uuid = Generators.timeBasedGenerator().generate();
+		UUID uuid = Generators.randomBasedGenerator().generate();
 		return uuid.toString();
 	}
 	
