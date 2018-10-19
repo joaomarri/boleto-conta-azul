@@ -9,7 +9,7 @@ public class BankSlip {
 	private Date dueDate;
 	private BigDecimal totalInCents;
 	private String customer;
-	private String status;
+	private StatusEnum status;
 	
 	
 	public String getId() {
@@ -43,17 +43,14 @@ public class BankSlip {
 	public void setCustomer(String customer) {
 		this.customer = customer;
 	}
-	
-	public String getStatus() {
+
+	public StatusEnum getStatus() {
 		return status;
 	}
-	
-	public void setStatus(String status) {
+
+	public void setStatus(StatusEnum status) {
 		this.status = status;
 	}
-	
-	
-	
 	
 	
 }

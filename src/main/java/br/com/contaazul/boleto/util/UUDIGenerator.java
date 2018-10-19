@@ -4,7 +4,10 @@ import java.util.UUID;
 import com.fasterxml.uuid.Generators;
 
 
-
+/**
+ * 
+ * Classe para gerar identintificador UUID
+ */
 public class UUDIGenerator {
 
 	
