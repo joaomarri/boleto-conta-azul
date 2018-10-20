@@ -1,9 +1,3 @@
-insert into teste
-values(1,'Teste1');
+insert into bankslips values ('84e8adbf-1a14-403b-ad73-d78ae19b59bf', '2018-10-01', 10000, 'company 1', 'PENDING' );
 
-insert into teste
-values(2,'Teste2');
-
-insert into bankslips values ('123-XSDD', '2018-10-01', 10000, 'joao', 'PENDING' );
-
-insert into bankslips values ('444-SDCFF', '2018-11-01', 10000, 'TESTE', 'PAID' );
+insert into bankslips values ('c2dbd236-3fa5-4ccc-9c12-bd0ae1d6dd89', '2018-11-01', 10000, 'company 2', 'PAID' );

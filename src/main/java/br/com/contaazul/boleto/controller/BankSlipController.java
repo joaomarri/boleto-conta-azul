@@ -11,26 +11,41 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.contaazul.boleto.model.BankSlip;
 import br.com.contaazul.boleto.model.BankSlipsVO;
-import br.com.contaazul.boleto.repository.BankSlipRepository;
+import br.com.contaazul.boleto.service.BankSlipService;
 
 @RestController
 @RequestMapping("/rest")
 public class BankSlipController {
 
 	@Autowired
-	private BankSlipRepository repository;
+	private BankSlipService bankService;
 	
 	
 	@GetMapping(value = "/bankslips", produces = "application/json;charset=UTF-8")
 	public ResponseEntity<BankSlipsVO> getBankSlips() {
 		BankSlipsVO bankSlipsVO = new BankSlipsVO();
-		bankSlipsVO.addAll(repository.findAll());
+		bankSlipsVO.addAll(bankService.getAllBankSlip());
 		return new ResponseEntity<BankSlipsVO>(bankSlipsVO, getStatusResponse(bankSlipsVO.getBankSlip())); 
+	}
+
+	@GetMapping(value = "/bankslips/{id}", produces = "application/json;charset=UTF-8")
+	public ResponseEntity<BankSlip> getBankSlipsById(String id) {
+		BankSlip bankSlip = bankService.getBankSlipById(id);
+		return new ResponseEntity<BankSlip>(bankSlip, getStatusResponse(bankSlip)); 
 	}
 	
 	private HttpStatus getStatusResponse(Collection<BankSlip> list) {
 		HttpStatus result = HttpStatus.OK; 
 		if (list.isEmpty()) {
+			return HttpStatus.NOT_FOUND; 
+		}
+		
+		return result;
+	}
+
+	private HttpStatus getStatusResponse(BankSlip bankSlip) {
+		HttpStatus result = HttpStatus.OK; 
+		if (bankSlip == null) {
 			return HttpStatus.NOT_FOUND; 
 		}
 		

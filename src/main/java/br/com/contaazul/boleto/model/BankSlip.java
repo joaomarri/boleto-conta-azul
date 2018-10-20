@@ -3,12 +3,23 @@ package br.com.contaazul.boleto.model;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class BankSlip {
 
+	@JsonProperty("id")
 	private String id;
+	
+	@JsonProperty("due_date")
 	private Date dueDate;
+	
+	@JsonProperty("total_in_cents")
 	private BigDecimal totalInCents;
+	
+	@JsonProperty("customer")
 	private String customer;
+	
+	@JsonProperty("status")
 	private StatusEnum status;
 	
 	

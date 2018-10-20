@@ -3,10 +3,15 @@ package br.com.contaazul.boleto.repository;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -16,6 +21,8 @@ import br.com.contaazul.boleto.model.StatusEnum;
 @Repository
 public class BankSlipRepository {
 
+	private static final Logger logger = LoggerFactory.getLogger(BankSlipRepository.class);
+	
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
 	
@@ -35,7 +42,30 @@ public class BankSlipRepository {
 	}
 	
 	public List<BankSlip> findAll() {
-		return jdbcTemplate.query("select * from bankslips ", new BankSlipRowMapper());
+		List<BankSlip> list = new ArrayList<>();
+		try {
+			list = jdbcTemplate.query("select * from bankslips ", new BankSlipRowMapper());
+		} catch (Exception e) {
+			logger.error("Error query find all bankslip in database ",e);
+		}
+		
+		return list; 
+	}
+	
+	public BankSlip findById(String id) {
+		BankSlip result = null;
+		
+		try {
+			MapSqlParameterSource parameters = new MapSqlParameterSource();
+			parameters.addValue("id", id);
+			result = jdbcTemplate.queryForObject("select * from bankslips where id = :id ", parameters, new BankSlipRowMapper());
+		} catch (EmptyResultDataAccessException e) {
+			logger.warn("bankslip with id {} not found in database", id);
+		} catch (Exception e) {
+			logger.error("Error query bankslip by id failed in database ",e);
+		}
+		
+		return result;
 	}
 	
 }
