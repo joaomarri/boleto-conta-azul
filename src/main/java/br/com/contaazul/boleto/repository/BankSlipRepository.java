@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -60,12 +61,23 @@ public class BankSlipRepository {
 			parameters.addValue("id", id);
 			result = jdbcTemplate.queryForObject("select * from bankslips where id = :id ", parameters, new BankSlipRowMapper());
 		} catch (EmptyResultDataAccessException e) {
-			logger.warn("bankslip with id {} not found in database", id);
+			logger.warn("bankslip with id {} was not found in database", id);
 		} catch (Exception e) {
 			logger.error("Error query bankslip by id failed in database ",e);
 		}
 		
 		return result;
+	}
+	
+	public boolean alterStatus(String id, StatusEnum status) {
+		MapSqlParameterSource parameters = new MapSqlParameterSource();
+		StringBuilder sql = new StringBuilder();
+		sql.append(" update bankslips set status = :status where id = :id ");
+		
+		parameters.addValue("id", id);
+		parameters.addValue("status", status.getValue());
+		
+		return jdbcTemplate.update(sql.toString(), parameters) > 0;
 	}
 	
 }
