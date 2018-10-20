@@ -22,7 +22,7 @@ public class BankSlipController {
 	
 	
 	@GetMapping(value = "/bankslips", produces = "application/json;charset=UTF-8")
-	public ResponseEntity<BankSlipsVO> getTestes() {
+	public ResponseEntity<BankSlipsVO> getBankSlips() {
 		BankSlipsVO bankSlipsVO = new BankSlipsVO();
 		bankSlipsVO.addAll(repository.findAll());
 		return new ResponseEntity<BankSlipsVO>(bankSlipsVO, getStatusResponse(bankSlipsVO.getBankSlip())); 

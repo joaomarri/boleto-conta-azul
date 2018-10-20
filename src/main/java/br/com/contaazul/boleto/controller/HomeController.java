@@ -23,12 +23,5 @@ public class HomeController {
 	public ResponseEntity<String> checkApi(){
 		return new ResponseEntity<String>("Ok", HttpStatus.OK);
 	}
-	
-	@GetMapping(value = "/testes", produces = "application/json;charset=UTF-8")
-	public ResponseEntity<TesteVO> getTestes() {
-		TesteVO testeVO = new TesteVO();
-		testeVO.setTestes(repository.findAll());
-		return new ResponseEntity<TesteVO>(testeVO, HttpStatus.OK); 
-	}
 
 }
