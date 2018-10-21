@@ -19,6 +19,8 @@ public class BankSlipsVO {
 		this.bankSlip.addAll(bankSlips);
 	}
 	
-	
+	public void add(BankSlip bankSlip) {
+		this.bankSlip.add(bankSlip);
+	}
 	
 }

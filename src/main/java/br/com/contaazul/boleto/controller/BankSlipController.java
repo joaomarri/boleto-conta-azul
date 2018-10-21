@@ -54,7 +54,7 @@ public class BankSlipController {
 	}
 
 	@GetMapping(value = "/bankslips/{id}", produces = "application/json;charset=UTF-8")
-	public ResponseEntity<BankSlip> getBankSlipsById(@PathVariable String id) {
+	public ResponseEntity<BankSlip> getDetailBankSlipsById(@PathVariable String id) {
 		BankSlip bankSlip = bankService.getBankSlipById(id);
 		bankSlip = bankService.applyBankSlipFine(bankSlip);
 		return new ResponseEntity<BankSlip>(bankSlip, getStatusResponse(bankSlip)); 
