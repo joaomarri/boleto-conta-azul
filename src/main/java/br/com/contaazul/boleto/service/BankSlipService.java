@@ -1,5 +1,7 @@
 package br.com.contaazul.boleto.service;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -11,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.contaazul.boleto.model.BankSlip;
 import br.com.contaazul.boleto.model.StatusEnum;
 import br.com.contaazul.boleto.repository.BankSlipRepository;
+import br.com.contaazul.boleto.util.DateUtil;
 import br.com.contaazul.boleto.util.UUDIGenerator;
 
 @Service
@@ -31,10 +34,30 @@ public class BankSlipService {
 		return repository.findById(id);
 	}
 	
+	public BankSlip applyBankSlipFine(BankSlip bankSlip) {
+		DateUtil dateUtil = new DateUtil(); 
+		double tax = 0.5/100;
+		
+		if (bankSlip != null) {
+			bankSlip.setFine(BigDecimal.ZERO);
+			long daysDelay = dateUtil.getDaysBetween(bankSlip.getPaymentDate(), bankSlip.getDueDate());
+			if (daysDelay > 0) {
+				if (daysDelay > 10) {
+					tax = 1/100;
+				}
+				
+				BigDecimal fine = bankSlip.getTotalInCents().multiply(BigDecimal.valueOf(tax));
+				bankSlip.setFine(fine);
+			}
+		}
+		
+		return bankSlip;
+	}
+	
 	@Transactional(readOnly=false)
-	public boolean paymentBankSlip(String id) {
+	public boolean paymentBankSlip(String id, Date paymentDate) {
 		try {
-			return repository.alterStatus(id, StatusEnum.PAID);
+			return repository.alterStatus(id, StatusEnum.PAID, paymentDate);
 		} catch (Exception e) {
 			logger.error("Error alter to paid status with id {}",id, e);
 			return false;

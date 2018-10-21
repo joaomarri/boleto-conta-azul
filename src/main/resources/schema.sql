@@ -4,5 +4,6 @@ create table bankslips (
 	total_in_cents numeric not null,
 	customer varchar(200) not null,
 	status varchar(20) not null,
+	payment_date date,
 	primary key(id)
 );

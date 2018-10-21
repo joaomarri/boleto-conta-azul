@@ -56,12 +56,13 @@ public class BankSlipController {
 	@GetMapping(value = "/bankslips/{id}", produces = "application/json;charset=UTF-8")
 	public ResponseEntity<BankSlip> getBankSlipsById(@PathVariable String id) {
 		BankSlip bankSlip = bankService.getBankSlipById(id);
+		bankSlip = bankService.applyBankSlipFine(bankSlip);
 		return new ResponseEntity<BankSlip>(bankSlip, getStatusResponse(bankSlip)); 
 	}
 	
 	@PostMapping(value = "/bankslips/{id}/payments", produces = "application/json;charset=UTF-8")
 	public ResponseEntity<HttpStatus> paymentBankSlip(@PathVariable String id, @RequestBody RequestPayment payment) {
-		boolean paid = bankService.paymentBankSlip(id);
+		boolean paid = bankService.paymentBankSlip(id, payment.getPaymentDate());
 		HttpStatus httpStatus = getResponse(paid);
 		return new ResponseEntity<HttpStatus>(httpStatus); 
 	}

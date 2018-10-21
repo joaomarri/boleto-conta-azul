@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -33,7 +34,7 @@ public class BankSlipRepository {
 			BankSlip bankSlip = new BankSlip();
 			bankSlip.setId(rs.getString("id"));
 			bankSlip.setCustomer(rs.getString("customer"));
-			bankSlip.setDueDate(rs.getDate("due_date"));
+			bankSlip.setDueDate(new Date(rs.getDate("due_date").getTime()));
 			bankSlip.setTotalInCents(BigDecimal.valueOf(rs.getDouble("total_in_cents")));
 			bankSlip.setStatus(StatusEnum.getStatusEnum(rs.getString("status")));
 			return bankSlip;
@@ -75,6 +76,18 @@ public class BankSlipRepository {
 		
 		parameters.addValue("id", id);
 		parameters.addValue("status", status.getValue());
+		
+		return jdbcTemplate.update(sql.toString(), parameters) > 0;
+	}
+	
+	public boolean alterStatus(String id, StatusEnum status, Date paymentDate) {
+		MapSqlParameterSource parameters = new MapSqlParameterSource();
+		StringBuilder sql = new StringBuilder();
+		sql.append(" update bankslips set status = :status, payment_date = :payment_date where id = :id ");
+		
+		parameters.addValue("id", id);
+		parameters.addValue("status", status.getValue());
+		parameters.addValue("payment_date", paymentDate);
 		
 		return jdbcTemplate.update(sql.toString(), parameters) > 0;
 	}
