@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -76,6 +75,22 @@ public class BankSlipRepository {
 		
 		parameters.addValue("id", id);
 		parameters.addValue("status", status.getValue());
+		
+		return jdbcTemplate.update(sql.toString(), parameters) > 0;
+	}
+	
+	public boolean insert(BankSlip bankSlip) {
+		MapSqlParameterSource parameters = new MapSqlParameterSource();
+		StringBuilder sql = new StringBuilder();
+		sql.append("insert into bankslips (id, due_date, total_in_cents, customer, status) ");
+		sql.append(" values ");
+		sql.append(" (:id, :due_date, :total_in_cents, :customer, :status) ");
+		
+		parameters.addValue("id", bankSlip.getId());
+		parameters.addValue("due_date", bankSlip.getDueDate());
+		parameters.addValue("total_in_cents", bankSlip.getTotalInCents());
+		parameters.addValue("customer", bankSlip.getCustomer());
+		parameters.addValue("status", bankSlip.getStatus().getValue());
 		
 		return jdbcTemplate.update(sql.toString(), parameters) > 0;
 	}

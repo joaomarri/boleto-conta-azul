@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.contaazul.boleto.model.BankSlip;
 import br.com.contaazul.boleto.model.BankSlipsVO;
+import br.com.contaazul.boleto.request.RequestBankSlip;
 import br.com.contaazul.boleto.request.RequestPayment;
 import br.com.contaazul.boleto.service.BankSlipService;
 
@@ -25,6 +26,25 @@ public class BankSlipController {
 	@Autowired
 	private BankSlipService bankService;
 	
+	
+	@PostMapping(value = "/bankslips", produces = "application/json;charset=UTF-8")
+	public ResponseEntity<?> createBankSlip(@RequestBody RequestBankSlip request) {
+		if (request == null) {
+			return new ResponseEntity<String>("Bankslip not provided in the request body", HttpStatus.BAD_REQUEST); 
+		}
+		
+		BankSlip bankSlip = new BankSlip();
+		bankSlip.setDueDate(request.getDueDate());
+		bankSlip.setTotalInCents(request.getTotalInCents());
+		bankSlip.setCustomer(request.getCustomer());
+		boolean created = bankService.createBankSlip(bankSlip);
+		
+		if (created) {
+			return new ResponseEntity<BankSlip>(bankSlip, HttpStatus.CREATED); 
+		} else {
+			return new ResponseEntity<String>("Invalid bankslip provided.The possible reasons are: \n A field of the provided bankslip was null or with invalid values", HttpStatus.UNPROCESSABLE_ENTITY); 
+		}
+	}
 	
 	@GetMapping(value = "/bankslips", produces = "application/json;charset=UTF-8")
 	public ResponseEntity<BankSlipsVO> getBankSlips() {
