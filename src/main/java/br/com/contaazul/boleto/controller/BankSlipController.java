@@ -28,9 +28,9 @@ public class BankSlipController {
 	
 	
 	@PostMapping(value = "/bankslips", produces = "application/json;charset=UTF-8")
-	public ResponseEntity<?> createBankSlip(@RequestBody RequestBankSlip request) {
+	public ResponseEntity<BankSlip> createBankSlip(@RequestBody RequestBankSlip request) {
 		if (request == null) {
-			return new ResponseEntity<String>("Bankslip not provided in the request body", HttpStatus.BAD_REQUEST); 
+			return new ResponseEntity<BankSlip>(HttpStatus.BAD_REQUEST); 
 		}
 		
 		BankSlip bankSlip = new BankSlip();
@@ -42,7 +42,7 @@ public class BankSlipController {
 		if (created) {
 			return new ResponseEntity<BankSlip>(bankSlip, HttpStatus.CREATED); 
 		} else {
-			return new ResponseEntity<String>("Invalid bankslip provided.The possible reasons are: \n A field of the provided bankslip was null or with invalid values", HttpStatus.UNPROCESSABLE_ENTITY); 
+			return new ResponseEntity<BankSlip>(HttpStatus.UNPROCESSABLE_ENTITY); 
 		}
 	}
 	
@@ -60,17 +60,17 @@ public class BankSlipController {
 	}
 	
 	@PostMapping(value = "/bankslips/{id}/payments", produces = "application/json;charset=UTF-8")
-	public ResponseEntity<?> paymentBankSlip(@PathVariable String id, @RequestBody RequestPayment payment) {
+	public ResponseEntity<HttpStatus> paymentBankSlip(@PathVariable String id, @RequestBody RequestPayment payment) {
 		boolean paid = bankService.paymentBankSlip(id);
 		HttpStatus httpStatus = getResponse(paid);
-		return new ResponseEntity<String>(httpStatus.getReasonPhrase(), httpStatus); 
+		return new ResponseEntity<HttpStatus>(httpStatus); 
 	}
 
 	@DeleteMapping(value = "/bankslips/{id}", produces = "application/json;charset=UTF-8")
-	public ResponseEntity<?> cancelBankSlip(@PathVariable String id) {
+	public ResponseEntity<HttpStatus> cancelBankSlip(@PathVariable String id) {
 		boolean canceled = bankService.cancelBankSlip(id);
 		HttpStatus httpStatus = getResponse(canceled);
-		return new ResponseEntity<String>(httpStatus.getReasonPhrase(), httpStatus); 
+		return new ResponseEntity<HttpStatus>(httpStatus); 
 	}
 	
 	private HttpStatus getResponse(boolean paid) {
