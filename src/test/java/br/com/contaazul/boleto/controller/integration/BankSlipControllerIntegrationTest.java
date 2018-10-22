@@ -3,8 +3,6 @@ package br.com.contaazul.boleto.controller.integration;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -23,6 +21,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import br.com.contaazul.boleto.controller.BankSlipController;
 import br.com.contaazul.boleto.model.BankSlip;
 import br.com.contaazul.boleto.request.RequestBankSlip;
+import br.com.contaazul.boleto.request.RequestPayment;
 import br.com.contaazul.boleto.service.BankSlipService;
 import br.com.contaazul.boleto.util.DateUtil;
 import br.com.contaazul.boleto.util.UUDIGenerator;
@@ -45,6 +44,7 @@ public class BankSlipControllerIntegrationTest {
 	
 	private BankSlip bankSlip = null;
 	
+	private RequestPayment payment = null;
 	
 	@Before
 	public void create() throws ParseException {
@@ -60,6 +60,9 @@ public class BankSlipControllerIntegrationTest {
 		bankSlip.setId(UUDIGenerator.generateUniqueId());
 		bankSlip.setTotalInCents(request.getTotalInCents());
 		bankSlips.add(bankSlip);
+		
+		payment = new RequestPayment();
+		payment.setPaymentDate(dateUtil.toDate("2018-10-22"));
 		
 	}
 	
@@ -97,12 +100,56 @@ public class BankSlipControllerIntegrationTest {
 	}
 	
 	@Test
-	public void checkDetailBankSlipsOkWithFineLess10Days() {
+	public void checkDetailBankSlipsNotFound() {
+		ResponseEntity<BankSlip> response = bankSlipController.getDetailBankSlipsById("xxx11-2222-455565-dhfjff3");
+		assertNull(response.getBody());
+		assertTrue(HttpStatus.NOT_FOUND.equals(response.getStatusCode()));
+	}
+	
+	@Test
+	public void checkDetailBankSlipsOkWithFineLessThan10Days() {
 		ResponseEntity<BankSlip> response = bankSlipController.getDetailBankSlipsById("c2dbd236-3fa5-4ccc-9c12-bd0ae1d6dd89");
 		assertNotNull(response.getBody());
 		assertNotNull(response.getBody().getFine());
 		assertTrue(BigDecimal.valueOf(50).setScale(4).equals(response.getBody().getFine()));
 		assertTrue(HttpStatus.OK.equals(response.getStatusCode()));
+	}
+	
+	@Test
+	public void checkDetailBankSlipsOkWithFineMoreThan10Days() {
+		ResponseEntity<BankSlip> response = bankSlipController.getDetailBankSlipsById("f2dbd236-3fa5-4ccc-9c12-bd0ae1d6dd89");
+		assertNotNull(response.getBody());
+		assertNotNull(response.getBody().getFine());
+		assertTrue(BigDecimal.valueOf(100).setScale(3).equals(response.getBody().getFine()));
+		assertTrue(HttpStatus.OK.equals(response.getStatusCode()));
+	}
+	
+	@Test
+	public void checkPaymentWithValidId() {
+		ResponseEntity<HttpStatus> response = bankSlipController.paymentBankSlip("d2dbd236-3fa5-4ccc-9c12-bd0ae1d6dd89", payment);
+		assertNull(response.getBody());
+		assertTrue(HttpStatus.NO_CONTENT.equals(response.getStatusCode()));
+	}
+	
+	@Test
+	public void checkPaymentWithInvalidId() {
+		ResponseEntity<HttpStatus> response = bankSlipController.paymentBankSlip("xxx11-2222-455565-dhfjff3", payment);
+		assertNull(response.getBody());
+		assertTrue(HttpStatus.NOT_FOUND.equals(response.getStatusCode()));
+	}
+	
+	@Test
+	public void checkCancelValidId() {
+		ResponseEntity<HttpStatus> response = bankSlipController.cancelBankSlip("e2dbd236-3fa5-4ccc-9c12-bd0ae1d6dd89");
+		assertNull(response.getBody());
+		assertTrue(HttpStatus.NO_CONTENT.equals(response.getStatusCode()));
+	}
+	
+	@Test
+	public void checkCancelInValidId() {
+		ResponseEntity<HttpStatus> response = bankSlipController.cancelBankSlip("xxx11-2222-455565-dhfjff3");
+		assertNull(response.getBody());
+		assertTrue(HttpStatus.NOT_FOUND.equals(response.getStatusCode()));
 	}
 	
 }

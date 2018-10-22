@@ -43,7 +43,7 @@ public class BankSlipService {
 			long daysDelay = dateUtil.getDaysBetween(bankSlip.getPaymentDate(), bankSlip.getDueDate());
 			if (daysDelay > 0) {
 				if (daysDelay > 10) {
-					tax = 1/100;
+					tax = 0.01d;
 				}
 				
 				BigDecimal fine = bankSlip.getTotalInCents().multiply(BigDecimal.valueOf(tax));
