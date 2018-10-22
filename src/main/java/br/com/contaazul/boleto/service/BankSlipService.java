@@ -39,7 +39,7 @@ public class BankSlipService {
 		double tax = 0.5/100;
 		
 		if (bankSlip != null) {
-			bankSlip.setFine(BigDecimal.ZERO);
+			//bankSlip.setFine(BigDecimal.ZERO);
 			long daysDelay = dateUtil.getDaysBetween(bankSlip.getPaymentDate(), bankSlip.getDueDate());
 			if (daysDelay > 0) {
 				if (daysDelay > 10) {

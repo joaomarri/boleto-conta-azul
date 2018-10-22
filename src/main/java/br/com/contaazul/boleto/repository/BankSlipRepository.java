@@ -37,6 +37,9 @@ public class BankSlipRepository {
 			bankSlip.setDueDate(new Date(rs.getDate("due_date").getTime()));
 			bankSlip.setTotalInCents(BigDecimal.valueOf(rs.getDouble("total_in_cents")));
 			bankSlip.setStatus(StatusEnum.getStatusEnum(rs.getString("status")));
+			if (rs.getDate("payment_date") != null) {
+				bankSlip.setPaymentDate(new Date(rs.getDate("payment_date").getTime()));
+			}
 			return bankSlip;
 		}
 
