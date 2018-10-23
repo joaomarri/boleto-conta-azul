@@ -1,6 +1,6 @@
 Api de integração para manipulação de boletos bancarios
 =========================================================
-Aplicação Web Service - api java desenvolvida para pode efetuar as operações de manipulação de boletos, criação, leitura, alteração, cancelamento.
+Aplicação Web Service - api rest desenvolvida para pode efetuar as operações de manipulação de boletos, criação, leitura, alteração, cancelamento.
 
 ###1. Technologias utilizadas
 * Java 8
