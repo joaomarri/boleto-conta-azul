@@ -125,28 +125,28 @@ public class BankSlipControllerIntegrationTest {
 	}
 	
 	@Test
-	public void checkPaymentWithValidId() {
+	public void checkPaymentBankSlipWithValidId() {
 		ResponseEntity<HttpStatus> response = bankSlipController.paymentBankSlip("d2dbd236-3fa5-4ccc-9c12-bd0ae1d6dd89", payment);
 		assertNull(response.getBody());
 		assertTrue(HttpStatus.NO_CONTENT.equals(response.getStatusCode()));
 	}
 	
 	@Test
-	public void checkPaymentWithInvalidId() {
+	public void checkPaymentBankSlipWithInvalidId() {
 		ResponseEntity<HttpStatus> response = bankSlipController.paymentBankSlip("xxx11-2222-455565-dhfjff3", payment);
 		assertNull(response.getBody());
 		assertTrue(HttpStatus.NOT_FOUND.equals(response.getStatusCode()));
 	}
 	
 	@Test
-	public void checkCancelValidId() {
+	public void checkCancelBankSlipWithValidId() {
 		ResponseEntity<HttpStatus> response = bankSlipController.cancelBankSlip("e2dbd236-3fa5-4ccc-9c12-bd0ae1d6dd89");
 		assertNull(response.getBody());
 		assertTrue(HttpStatus.NO_CONTENT.equals(response.getStatusCode()));
 	}
 	
 	@Test
-	public void checkCancelInValidId() {
+	public void checkCancelBankSlipWithInValidId() {
 		ResponseEntity<HttpStatus> response = bankSlipController.cancelBankSlip("xxx11-2222-455565-dhfjff3");
 		assertNull(response.getBody());
 		assertTrue(HttpStatus.NOT_FOUND.equals(response.getStatusCode()));

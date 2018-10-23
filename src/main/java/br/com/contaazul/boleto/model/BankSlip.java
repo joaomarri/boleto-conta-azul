@@ -13,6 +13,7 @@ public class BankSlip {
 	@JsonProperty("id")
 	private String id;
 	
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	@JsonProperty("due_date")
 	private Date dueDate;
 	
