@@ -10,7 +10,7 @@ Aplicação Web Service - api rest desenvolvida para pode efetuar as operações
 * Swagger
 
 ###2. Arquitetura
-Esse projeto foi desenvolvido com o padrão Rest para expor os serviços que realizam operações sobre boletos bancarios, a utilização do padrão Repository para a persistencia das informações.
+Esse projeto foi desenvolvido com o padrão Rest para expor os serviços que realizam operações sobre boletos bancarios, a utilização do padrão MVC para estruturar e dividir os modulos do sistema e o padrão Repository para a persistencia das informações.
 Foi utilizado o SGDB H2 de modo embedado, em memoria, na aplicação e por isso não é necessario a instalação e configuração de algum banco de dados para pode executar esse projeto para teste local.
 Para a documentação da api utulizou-se o framework Swagger integrado com o Spring. 
 
