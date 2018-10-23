@@ -14,7 +14,7 @@ Esse projeto foi desenvolvido com o padrão Rest para expor os serviços que rea
 Foi utilizado o SGDB H2 de modo embedado, em memoria, na aplicação e por isso não é necessario a instalação e configuração de algum banco de dados para pode executar esse projeto para teste local.
 Para a documentação da api utulizou-se o framework Swagger integrado com o Spring. 
 
-###3. Para executar este projeto local
+###3. Para executar este projeto
 ```shell
 $ git clone https://github.com/joaomarri/boleto-conta-azul
 $ mvn spring-boot:run
