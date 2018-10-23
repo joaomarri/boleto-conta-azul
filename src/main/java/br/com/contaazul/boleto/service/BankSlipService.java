@@ -1,6 +1,5 @@
 package br.com.contaazul.boleto.service;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -46,8 +45,7 @@ public class BankSlipService {
 					tax = 0.01d;
 				}
 				
-				BigDecimal fine = bankSlip.getTotalInCents().multiply(BigDecimal.valueOf(tax));
-				bankSlip.setFine(fine);
+				bankSlip.calcFine(tax);
 			}
 		}
 		

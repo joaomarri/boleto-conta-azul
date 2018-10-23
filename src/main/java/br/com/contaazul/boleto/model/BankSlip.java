@@ -96,6 +96,10 @@ public class BankSlip {
 		this.fine = fine;
 	}
 	
+	public void calcFine(double tax) {
+		BigDecimal fine = this.totalInCents.multiply(BigDecimal.valueOf(tax));
+		this.fine = fine;
+	}
 	
 	
 	
