@@ -11,7 +11,7 @@ VOLUME /tmp
 EXPOSE 8080
 
 # The application's jar file
-ARG JAR_FILE=target/boleto-1.0.0.jar
+ARG JAR_FILE=target/boleto-1.5.1.jar
 
 # Add the application's jar to the container
 ADD ${JAR_FILE} boleto-conta-azul.jar

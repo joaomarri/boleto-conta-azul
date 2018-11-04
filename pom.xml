@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.com.contaazul.boleto</groupId>
 	<artifactId>boleto</artifactId>
-	<version>1.0.0</version>
+	<version>1.5.1</version>
 	<packaging>jar</packaging>
 
 	<name>boleto</name>
@@ -127,13 +127,36 @@
 	<build>
 		<plugins>
 			
-			
 				<plugin>
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-maven-plugin</artifactId>
 				</plugin>
 			
-			
+				<plugin>
+					<groupId>com.spotify</groupId>
+					<artifactId>dockerfile-maven-plugin</artifactId>
+					<version>1.4.8</version>
+					<configuration>
+						<repository>joaomarri/boleto-conta-azul</repository>
+						<tag>${project.version}</tag>
+						<googleContainerRegistryEnabled>false</googleContainerRegistryEnabled>
+						<buildArgs>
+							<JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
+						</buildArgs>
+					</configuration>
+					
+					<executions>
+						<execution>
+							<id>default</id>
+							<phase>install</phase>
+							<goals>
+								<goal>build</goal>
+								<goal>push</goal>
+							</goals>
+						</execution>
+			 		</executions>
+				</plugin>
+				
 		</plugins>
 	</build>
 
